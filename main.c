@@ -1,15 +1,12 @@
+#include "book.h"
 #include <stdio.h>
 
 int main() {
-    FILE* book = fopen("my_poem.txt", "rb");
+    struct Book book = OpenBook("my_poem.txt");
 
-    fseek(book, 0, SEEK_END);
+    printf("Book Size: %ld words", book.file_size);
 
-    long int file_size = ftell(book);
-
-    fseek(book, 0, SEEK_SET);
-
-    fclose(book);
+    CloseBook(book);
 
     return 0;
 }
