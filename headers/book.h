@@ -4,7 +4,8 @@
 
 struct Book {
     FILE* source;
-    long int file_size;
+    char* contents;
+    long int size;
 };
 
 struct Book OpenBook(char* file_path);

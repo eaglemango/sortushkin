@@ -1,13 +1,19 @@
 #include "book.h"
+#include <stdlib.h>
 
 struct Book OpenBook(char* file_path) {
-    struct Book book = { .source = fopen(file_path, "rb") };
+    struct Book book = { .source = fopen(file_path, "rb"),
+                         .contents = NULL,
+                         .size = 0l
+                       };
 
     fseek(book.source, 0, SEEK_END);
-
-    book.file_size = ftell(book.source);
-
+    book.size = ftell(book.source);
     fseek(book.source, 0, SEEK_SET);
+
+    book.contents = (char*) calloc(book.size + 1, sizeof(char));
+    fread(book.contents, sizeof(char), book.size, book.source);
+    book.contents[book.size] = '\0';
 
     return book;
 }
