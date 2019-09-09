@@ -11,8 +11,9 @@ struct Book OpenBook(char* file_path) {
     book.size = ftell(book.source);
     fseek(book.source, 0, SEEK_SET);
 
-    book.contents = (char*) calloc(book.size + 1, sizeof(char));
-    fread(book.contents, sizeof(char), book.size, book.source);
+    book.contents = (char*) calloc(book.size + 2, sizeof(char));
+    fread(book.contents + 1, sizeof(char), book.size, book.source);
+    book.contents[0] = '\0';
     book.contents[book.size] = '\0';
 
     return book;
