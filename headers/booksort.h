@@ -7,7 +7,7 @@ enum SortType {
     RIGHT_TO_LEFT
 };
 
-int PreprocessBook(struct Book book, char** words_beginnings[], char** words_ends[]);
+int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_ends[]);
 
 int IsIgnored(char c);
 
