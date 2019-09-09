@@ -49,7 +49,7 @@ int PreprocessBook(struct Book book, char** words_beginnings[], char** words_end
 }
 
 int IsIgnored(char c) {
-    return !(('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z'));
+    return ('a' > c || c > 'z') && ('A' > c || c > 'Z');
 }
 
 int IsBigger(char* lhs, char* rhs) {
