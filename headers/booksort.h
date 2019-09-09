@@ -18,6 +18,8 @@ int IsIgnored(char c);
 
 int IsBigger(char* lhs, char* rhs, enum CompareType compare_type);
 
+void Swap(char** lhs, char** rhs);
+
 void SortBook(struct Book book, enum SortType sort_type);
 
 void PrintSortedBook(char** book, int lines_count);

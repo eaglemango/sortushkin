@@ -78,6 +78,12 @@ int IsBigger(char* lhs, char* rhs, enum CompareType compare_type) {
     }
 }
 
+void Swap(char** lhs, char** rhs) {
+    char* temp = *rhs;
+    *rhs = *lhs;
+    *lhs = temp;
+}
+
 void SortBook(struct Book book, enum SortType sort_type) {
     char** lines_beginnings, ** lines_ends;
 
@@ -88,9 +94,7 @@ void SortBook(struct Book book, enum SortType sort_type) {
         for (int i = 0; i < lines_count; ++i) {
             for (int j = 0; j < lines_count; ++j) {
                 if (IsBigger(lines_beginnings[i], lines_beginnings[j], CLASSIC)) {
-                    char* temp = lines_beginnings[j];
-                    lines_beginnings[j] = lines_beginnings[i];
-                    lines_beginnings[i] = temp;
+                    Swap(&lines_beginnings[i], &lines_beginnings[j]);
                 }
             }
         }
@@ -101,13 +105,9 @@ void SortBook(struct Book book, enum SortType sort_type) {
         for (int i = 0; i < lines_count; ++i) {
             for (int j = 0; j < lines_count; ++j) {
                 if (IsBigger(lines_ends[i], lines_ends[j], REVERSE)) {
-                    char* temp = lines_ends[j];
-                    lines_ends[j] = lines_ends[i];
-                    lines_ends[i] = temp;
+                    Swap(&lines_ends[i], &lines_ends[j]);
 
-                    temp = lines_beginnings[j];
-                    lines_beginnings[j] = lines_beginnings[i];
-                    lines_beginnings[i] = temp;
+                    Swap(&lines_beginnings[i], &lines_beginnings[j]);
                 }
             }
         }
