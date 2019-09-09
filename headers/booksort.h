@@ -7,6 +7,8 @@ enum SortType {
     RIGHT_TO_LEFT
 };
 
-void PreprocessBook(struct Book book, char** words_beginnings[], char** words_ends[]);
+int PreprocessBook(struct Book book, char** words_beginnings[], char** words_ends[]);
+
+int CompareStrings(char* lhs, char* rhs);
 
 void SortBook(struct Book book, enum SortType sort_type);
