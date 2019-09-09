@@ -52,56 +52,26 @@ int IsIgnored(char c) {
     return ('a' > c || c > 'z') && ('A' > c || c > 'Z');
 }
 
-int IsBigger(char* lhs, char* rhs) {
-    if (*lhs == '\0' && *rhs != '\0') {
-        return 0;
-    } else if (*lhs != '\0' && *rhs == '\0') {
-        return 1;
-    } else if (*lhs == '\0' && *rhs == '\0') {
-        return 1;
+int IsBigger(char* lhs, char* rhs, enum CompareType compare_type) {
+    if (*lhs == '\0' || *rhs == '\0') {
+        return *rhs == '\0';
     }
 
+    int shift = (compare_type == CLASSIC) ? 1 : -1;
+
     if (IsIgnored(*lhs)) {
-        return IsBigger(lhs + 1, rhs);
+        return IsBigger(lhs + shift, rhs, compare_type);
     }
 
     if (IsIgnored(*rhs)) {
-        return IsBigger(lhs, rhs + 1);
+        return IsBigger(lhs, rhs + shift, compare_type);
     }
-
-    if (lhs[0] < rhs[0]) {
+    
+    if (*lhs < *rhs) {
         return 1;
 
-    } else if (lhs[0] == rhs[0]) {
-        return IsBigger(lhs + 1, rhs + 1);
-
-    } else {
-        return 0;
-    }
-}
-
-int IsReversedBigger(char* lhs, char* rhs) {
-    if (*lhs == '\0' && *rhs != '\0') {
-        return 0;
-    } else if (*lhs != '\0' && *rhs == '\0') {
-        return 1;
-    } else if (*lhs == '\0' && *rhs == '\0') {
-        return 1;
-    }
-
-    if (IsIgnored(*lhs)) {
-        return IsReversedBigger(lhs - 1, rhs);
-    }
-
-    if (IsIgnored(*rhs)) {
-        return IsReversedBigger(lhs, rhs - 1);
-    }
-
-    if (lhs[0] < rhs[0]) {
-        return 1;
-
-    } else if (lhs[0] == rhs[0]) {
-        return IsReversedBigger(lhs - 1, rhs - 1);
+    } else if (*lhs == *rhs) {
+        return IsBigger(lhs + shift, rhs + shift, compare_type);
 
     } else {
         return 0;
@@ -117,7 +87,7 @@ void SortBook(struct Book book, enum SortType sort_type) {
     case LEFT_TO_RIGHT:
         for (int i = 0; i < lines_count; ++i) {
             for (int j = 0; j < lines_count; ++j) {
-                if (IsBigger(lines_beginnings[i], lines_beginnings[j])) {
+                if (IsBigger(lines_beginnings[i], lines_beginnings[j], CLASSIC)) {
                     char* temp = lines_beginnings[j];
                     lines_beginnings[j] = lines_beginnings[i];
                     lines_beginnings[i] = temp;
@@ -130,7 +100,7 @@ void SortBook(struct Book book, enum SortType sort_type) {
     case RIGHT_TO_LEFT:
         for (int i = 0; i < lines_count; ++i) {
             for (int j = 0; j < lines_count; ++j) {
-                if (IsReversedBigger(lines_ends[i], lines_ends[j])) {
+                if (IsBigger(lines_ends[i], lines_ends[j], REVERSE)) {
                     char* temp = lines_ends[j];
                     lines_ends[j] = lines_ends[i];
                     lines_ends[i] = temp;

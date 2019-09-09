@@ -7,13 +7,16 @@ enum SortType {
     RIGHT_TO_LEFT
 };
 
+enum CompareType {
+    CLASSIC,
+    REVERSE
+};
+
 int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_ends[]);
 
 int IsIgnored(char c);
 
-int IsBigger(char* lhs, char* rhs);
-
-int IsReversedBigger(char* lhs, char* rhs);
+int IsBigger(char* lhs, char* rhs, enum CompareType compare_type);
 
 void SortBook(struct Book book, enum SortType sort_type);
 
