@@ -2,10 +2,8 @@
 #include <stdlib.h>
 
 int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_ends[]) {
-    char* buffer = book.contents + 1;
-
     int total_lines = 0;
-    for (char* c = buffer; c < buffer + book.size + 1; ++c) {
+    for (char* c = book.contents; c < book.contents + book.size + 2; ++c) {
         if (*c == '\n') {
             *c = '\0';
 
@@ -16,32 +14,17 @@ int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_end
     // На самом деле мы подсчитали количество переносов, осмысленных строк на одну больше
     ++total_lines;
 
-    buffer[book.size] = '\0';
-
     *lines_beginnings = (char**) calloc(total_lines, sizeof(char));
     *lines_ends = (char**) calloc(total_lines, sizeof(char));
 
     int curr_line = 0;
-    int is_beginning = 1;
-    for (char* c = buffer; c <= buffer + book.size + 1; ++c) {
-        if (is_beginning) {
-            if (*c == '\0') {
-                continue;
-            }
-            (*lines_beginnings)[curr_line] = c;
-
-            is_beginning = 0;
-        }
-
-        if (*c == '\0') {
-            if (*(c - 1) == '\0') {
-                continue;
-            }
-            (*lines_ends)[curr_line] = c - 1;
+    for (char* c = book.contents; c < book.contents + book.size + 2; ++c) {
+        if (*c != '\0' && *(c + 1) == '\0') {
+            (*lines_ends)[curr_line] = c;
 
             ++curr_line;
-
-            is_beginning = 1;
+        } else if (*c == '\0' && *(c + 1) != '\0') {
+            (*lines_beginnings)[curr_line] = c + 1;
         }
     }
 
@@ -57,7 +40,7 @@ int IsBigger(char* lhs, char* rhs, enum CompareType compare_type) {
         return *rhs == '\0';
     }
 
-    int shift = (compare_type == CLASSIC) ? 1 : -1;
+    int shift = (compare_type == CLASSIC ? 1 : -1);
 
     if (IsIgnored(*lhs)) {
         return IsBigger(lhs + shift, rhs, compare_type);
@@ -88,37 +71,47 @@ void SortBook(struct Book book, enum SortType sort_type) {
     char** lines_beginnings, ** lines_ends;
 
     int lines_count = PreprocessBook(book, &lines_beginnings, &lines_ends);
+    /*
+    for (int i = 0; i < lines_count; ++i) {
+        printf("%c", *lines_beginnings[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < lines_count; ++i) {
+        printf("%c", *lines_ends[i]);
+    }
+    */
 
-    switch (sort_type) {
-    case LEFT_TO_RIGHT:
-        for (int i = 0; i < lines_count; ++i) {
-            for (int j = 0; j < lines_count; ++j) {
-                if (IsBigger(lines_beginnings[i], lines_beginnings[j], CLASSIC)) {
-                    Swap(&lines_beginnings[i], &lines_beginnings[j]);
-                }
-            }
-        }
-
-        break;
-
-    case RIGHT_TO_LEFT:
+    if (sort_type != LEFT_TO_RIGHT) {
         for (int i = 0; i < lines_count; ++i) {
             for (int j = 0; j < lines_count; ++j) {
                 if (IsBigger(lines_ends[i], lines_ends[j], REVERSE)) {
-                    Swap(&lines_ends[i], &lines_ends[j]);
-
-                    Swap(&lines_beginnings[i], &lines_beginnings[j]);
+                    char* temp = lines_ends[j];
+                    lines_ends[j] = lines_ends[i];
+                    lines_ends[i] = temp;
                 }
             }
         }
 
-        break;
-
-    default:
-        break;
+        printf("[ Book in reversed lexicographic order ]\n---\n");
+        PrintSortedBook(lines_beginnings, lines_count);
+        printf("---\n");
     }
 
-    PrintSortedBook(lines_beginnings, lines_count);
+    if (sort_type != RIGHT_TO_LEFT) {
+        for (int i = 0; i < lines_count; ++i) {
+            for (int j = 0; j < lines_count; ++j) {
+                if (IsBigger(lines_beginnings[i], lines_beginnings[j], CLASSIC)) {
+                    char* temp = lines_beginnings[j];
+                    lines_beginnings[j] = lines_beginnings[i];
+                    lines_beginnings[i] = temp;
+                }
+            }
+        }
+
+        printf("[ Book in direct lexicographic order ]\n---\n");
+        PrintSortedBook(lines_beginnings, lines_count);
+        printf("---\n");
+    }
 }
 
 void PrintSortedBook(char** book, int lines_count) {

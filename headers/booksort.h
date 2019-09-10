@@ -4,7 +4,8 @@
 
 enum SortType {
     LEFT_TO_RIGHT,
-    RIGHT_TO_LEFT
+    RIGHT_TO_LEFT,
+    BOTH
 };
 
 enum CompareType {

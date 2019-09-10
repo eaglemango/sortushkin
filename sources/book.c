@@ -14,7 +14,7 @@ struct Book OpenBook(char* file_path) {
     book.contents = (char*) calloc(book.size + 2, sizeof(char));
     fread(book.contents + 1, sizeof(char), book.size, book.source);
     book.contents[0] = '\0';
-    book.contents[book.size] = '\0';
+    book.contents[book.size + 1] = '\0';
 
     return book;
 }
