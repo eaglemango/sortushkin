@@ -14,8 +14,8 @@ int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_end
     // На самом деле мы подсчитали количество переносов, осмысленных строк на одну больше
     ++total_lines;
 
-    *lines_beginnings = (char**) calloc(total_lines, sizeof(char));
-    *lines_ends = (char**) calloc(total_lines, sizeof(char));
+    *lines_beginnings = (char**) calloc(total_lines, sizeof(char*));
+    *lines_ends = (char**) calloc(total_lines, sizeof(char*));
 
     int curr_line = 0;
     for (char* c = book.contents; c < book.contents + book.size + 2; ++c) {
@@ -71,15 +71,6 @@ void SortBook(struct Book book, enum SortType sort_type) {
     char** lines_beginnings, ** lines_ends;
 
     int lines_count = PreprocessBook(book, &lines_beginnings, &lines_ends);
-    /*
-    for (int i = 0; i < lines_count; ++i) {
-        printf("%c", *lines_beginnings[i]);
-    }
-    printf("\n");
-    for (int i = 0; i < lines_count; ++i) {
-        printf("%c", *lines_ends[i]);
-    }
-    */
 
     if (sort_type != LEFT_TO_RIGHT) {
         for (int i = 0; i < lines_count; ++i) {
