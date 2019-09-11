@@ -76,25 +76,22 @@ void SortBook(struct Book book, enum SortType sort_type) {
         for (int i = 0; i < lines_count; ++i) {
             for (int j = 0; j < lines_count; ++j) {
                 if (IsBigger(lines_ends[i], lines_ends[j], REVERSE)) {
-                    char* temp = lines_ends[j];
-                    lines_ends[j] = lines_ends[i];
-                    lines_ends[i] = temp;
+                    Swap(&lines_ends[i], &lines_ends[j]);
+                    Swap(&lines_beginnings[i], &lines_beginnings[j]);
                 }
             }
         }
 
         printf("[ Book in reversed lexicographic order ]\n---\n");
         PrintSortedBook(lines_beginnings, lines_count);
-        printf("---\n");
+        printf("---\n\n");
     }
 
     if (sort_type != RIGHT_TO_LEFT) {
         for (int i = 0; i < lines_count; ++i) {
             for (int j = 0; j < lines_count; ++j) {
                 if (IsBigger(lines_beginnings[i], lines_beginnings[j], CLASSIC)) {
-                    char* temp = lines_beginnings[j];
-                    lines_beginnings[j] = lines_beginnings[i];
-                    lines_beginnings[i] = temp;
+                    Swap(&lines_beginnings[i], &lines_beginnings[j]);
                 }
             }
         }

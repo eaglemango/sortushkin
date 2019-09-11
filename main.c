@@ -1,10 +1,11 @@
 #include "book.h"
+#include "booksort.h"
 #include <stdio.h>
 
 int main() {
     struct Book book = OpenBook("my_poem.txt");
 
-    printf("Book Size: %ld words", book.file_size);
+    SortBook(book, BOTH);
 
     CloseBook(book);
 
