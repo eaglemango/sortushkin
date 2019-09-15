@@ -21,4 +21,6 @@ struct Book OpenBook(char* file_path) {
 
 void CloseBook(struct Book book) {
     fclose(book.source);
+
+    free(book.contents);
 }

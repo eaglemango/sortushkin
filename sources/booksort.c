@@ -68,7 +68,7 @@ void Swap(char** lhs, char** rhs) {
 }
 
 void SortBook(struct Book book, enum SortType sort_type) {
-    char** lines_beginnings, ** lines_ends;
+    char** lines_beginnings = NULL, ** lines_ends = NULL;
 
     int lines_count = PreprocessBook(book, &lines_beginnings, &lines_ends);
 
@@ -100,6 +100,9 @@ void SortBook(struct Book book, enum SortType sort_type) {
         PrintSortedBook(lines_beginnings, lines_count);
         printf("---\n");
     }
+
+    free(lines_beginnings);
+    free(lines_ends);
 }
 
 void PrintSortedBook(char** book, int lines_count) {
