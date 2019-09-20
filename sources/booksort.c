@@ -1,3 +1,7 @@
+/*!
+    @file
+    @brief Contains definitions of all functions from booksort.h
+*/
 #include <assert.h>
 #include "booksort.h"
 #include <stdlib.h>

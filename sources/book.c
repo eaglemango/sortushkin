@@ -1,3 +1,7 @@
+/*!
+    @file
+    @brief Contains definitions of all functions from book.h
+*/
 #include <assert.h>
 #include "book.h"
 #include <stdlib.h>
