@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "booksort.h"
 #include <stdlib.h>
 
@@ -14,7 +15,10 @@ int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_end
     }
 
     *lines_beginnings = (char**) calloc(total_lines, sizeof(char*));
+    assert(lines_beginnings != NULL);
+
     *lines_ends = (char**) calloc(total_lines, sizeof(char*));
+    assert(lines_ends != NULL);
 
     int curr_line = 0;
     for (char* c = book.contents; c < book.contents + book.size + 2; ++c) {
@@ -36,6 +40,9 @@ int IsIgnored(char c) {
 }
 
 int IsBigger(char* lhs, char* rhs, enum CompareType compare_type) {
+    assert(lhs != NULL);
+    assert(rhs != NULL);
+
     if (*lhs == '\0' || *rhs == '\0') {
         return *rhs == '\0';
     }
@@ -62,6 +69,9 @@ int IsBigger(char* lhs, char* rhs, enum CompareType compare_type) {
 }
 
 void Swap(char** lhs, char** rhs) {
+    assert(*lhs != NULL);
+    assert(*rhs != NULL);
+
     char* temp = *rhs;
     *rhs = *lhs;
     *lhs = temp;
@@ -106,6 +116,8 @@ void SortBook(struct Book book, enum SortType sort_type) {
 }
 
 void PrintSortedBook(char** book, int lines_count) {
+    assert(book != NULL);
+
     for (int i = 0; i < lines_count; ++i) {
         printf("%s\n", book[i]);
     }
