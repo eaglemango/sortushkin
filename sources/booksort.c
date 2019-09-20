@@ -7,12 +7,11 @@ int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_end
         if (*c == '\n') {
             *c = '\0';
 
-            ++total_lines;
+            if (*(c - 1) != '\0') {
+                ++total_lines;
+            }
         }
     }
-
-    // На самом деле мы подсчитали количество переносов, осмысленных строк на одну больше
-    ++total_lines;
 
     *lines_beginnings = (char**) calloc(total_lines, sizeof(char*));
     *lines_ends = (char**) calloc(total_lines, sizeof(char*));
@@ -23,6 +22,7 @@ int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_end
             (*lines_ends)[curr_line] = c;
 
             ++curr_line;
+
         } else if (*c == '\0' && *(c + 1) != '\0') {
             (*lines_beginnings)[curr_line] = c + 1;
         }
