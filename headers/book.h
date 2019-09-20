@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 struct Book {
-    FILE* source;
     char* contents;
     long int size;
 };
