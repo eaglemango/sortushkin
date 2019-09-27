@@ -5,16 +5,18 @@
 #include <assert.h>
 #include "booksort.h"
 #include <stdlib.h>
+#include <string.h>
 
 int PreprocessBook(struct Book book, char** lines_beginnings[], char** lines_ends[]) {
     int total_lines = 0;
-    for (char* c = book.contents; c < book.contents + book.size + 2; ++c) {
-        if (*c == '\n') {
-            *c = '\0';
+    char* c = strchr(book.contents + 1, '\n');
+    while (c < book.contents + book.size + 2 && c != NULL) {
+        char* temp = c;
+        c = strchr(c + 1, '\n');
+        *temp = '\0';
 
-            if (*(c - 1) != '\0') {
-                ++total_lines;
-            }
+        if (*(temp - 1) != '\0') {
+            ++total_lines;
         }
     }
 
